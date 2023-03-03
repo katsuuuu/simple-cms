@@ -98,6 +98,21 @@ app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
   // const newPath = path + "." + ext;
   // fs.renameSync(path, newPath);
 
+  // Numberだと0に置き換える
+  if (
+    typeof req.body.title === "string" &&
+    req.body.title.toLowerCase() === "number"
+  ) {
+    req.body.title = 0;
+  }
+  // Numberだと0に置き換える
+  if (
+    typeof req.body.summary === "string" &&
+    req.body.summary.toLowerCase() === "number"
+  ) {
+    req.body.summary = 0;
+  }
+
   const { token } = req.cookies;
   jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
@@ -141,16 +156,8 @@ app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
 //   });
 // });
 
+// Edit
 app.put("/post", uploadMiddleware.single("file"), async (req, res) => {
-  // let newPath = null;
-  // if (req.file) {
-  //   const { originalname, path } = req.file;
-  //   const parts = originalname.split(".");
-  //   const ext = parts[parts.length - 1];
-  //   newPath = path + "." + ext;
-  //   fs.renameSync(path, newPath);
-  // }
-
   const { token } = req.cookies;
   jwt.verify(token, secret, {}, async (err, info) => {
     if (err) throw err;
@@ -160,6 +167,19 @@ app.put("/post", uploadMiddleware.single("file"), async (req, res) => {
     if (!isAuthor) {
       return res.status(400).json("you are not the author");
     }
+    // データの型をチェックして、変更できない場合はエラーを返す
+    // if (title === "Text" && typeof postDoc.title === "number") {
+    //   return res.status(400).json("Cannot change String to Number");
+    // }
+    // if (summary === "Text" && typeof postDoc.summary === "number") {
+    //   return res.status(400).json("Cannot change String to Number");
+    // }
+    // if (typeof title === 0 && postDoc.title === "Text") {
+    //   return res.status(400).json("Cannot change String to Number");
+    // }
+    // if (typeof summary === 0 && postDoc.summary === "Text") {
+    //   return res.status(400).json("Cannot change String to Number");
+    // }
     await postDoc.update({
       title,
       summary,
@@ -190,3 +210,5 @@ app.listen(4000);
 // 386RsbGTlJ987u5i
 // Mongo connection
 // mongodb+srv://nakanishikatsu0804:386RsbGTlJ987u5i@cluster0.on9zjah.mongodb.net/?retryWrites=true&w=majority
+
+// summaryの型を見る // typeof()

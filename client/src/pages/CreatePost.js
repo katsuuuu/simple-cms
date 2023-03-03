@@ -33,12 +33,12 @@ export default function CreatePost() {
 
   return (
     <form onSubmit={createNewPost}>
-      <input
+      {/* <input
         type="type"
         placeholder={"Text or Number"}
         value={title}
         onChange={(ev) => setTitle(ev.target.value)}
-      />
+      /> */}
       {/* <input
         type="summary"
         placeholder={"Text or Number"}
@@ -46,12 +46,20 @@ export default function CreatePost() {
         onChange={(ev) => setSummary(ev.target.value)}
       /> */}
       <select
+        name="title"
+        value={title}
+        onChange={(ev) => setTitle(ev.target.value)}>
+        <option value="">Choose an option</option>
+        <option value="Text">Text</option>
+        <option value="Number">Number</option>
+      </select>
+      <select
         name="summary"
         value={summary}
         onChange={(ev) => setSummary(ev.target.value)}>
         <option value="">Choose an option</option>
-        <option value="Option1">Option 1</option>
-        <option value="1">1</option>
+        <option value="Text">Text</option>
+        <option value="Number">Number</option>
       </select>
       <button style={{ marginTop: "5px" }}>Create</button>
     </form>

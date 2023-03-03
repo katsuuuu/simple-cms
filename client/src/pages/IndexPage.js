@@ -10,5 +10,12 @@ export default function IndexPage() {
       });
     });
   }, []);
-  return <>{posts.length > 0 && posts.map((post) => <Post {...post} />)}</>;
+  // Warning: Each child in a list should have a unique "key" prop.
+  // return <>{posts.length > 0 && posts.map((post) => <Post {...post} />)}</>;
+  return (
+    <>
+      {posts.length > 0 &&
+        posts.map((post) => <Post key={post._id} {...post} />)}
+    </>
+  );
 }

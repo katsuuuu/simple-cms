@@ -3,11 +3,15 @@ const { Schema, model } = mongoose;
 
 const PostSchema = new Schema(
   {
-    title: String | Number,
+    title: {
+      type: mongoose.Schema.Types.Mixed,
+      required: true,
+      enum: ["Text", "Number"],
+    },
     summary: {
       type: mongoose.Schema.Types.Mixed,
       required: true,
-      enum: ["Option1", 1],
+      enum: ["Text", "Number"],
     },
     author: { type: Schema.Types.ObjectId, ref: "User" },
   },
