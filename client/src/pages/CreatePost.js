@@ -39,12 +39,20 @@ export default function CreatePost() {
         value={title}
         onChange={(ev) => setTitle(ev.target.value)}
       />
-      <input
+      {/* <input
         type="summary"
         placeholder={"Text or Number"}
         value={summary}
         onChange={(ev) => setSummary(ev.target.value)}
-      />
+      /> */}
+      <select
+        name="summary"
+        value={summary}
+        onChange={(ev) => setSummary(ev.target.value)}>
+        <option value="">Choose an option</option>
+        <option value="Option1">Option 1</option>
+        <option value="1">1</option>
+      </select>
       <button style={{ marginTop: "5px" }}>Create</button>
     </form>
   );
