@@ -7,6 +7,9 @@ export default function EditPost() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [redirect, setRedirect] = useState(false);
+  const [previousPosts, setPreviousPosts] = useState(
+    JSON.parse(localStorage.getItem("previousPosts")) || []
+  );
 
   useEffect(() => {
     fetch("http://localhost:4000/post/" + id).then((response) => {
@@ -30,12 +33,27 @@ export default function EditPost() {
       credentials: "include",
     });
     if (response.ok) {
-      setRedirect(true);
+      // setRedirect(false);
+      handleRecord(ev);
     }
   }
 
+  // もしメインページに戻りたい場合setRedirectと一緒に使用
   if (redirect) {
     return <Navigate to={"/post/" + id} />;
+  }
+
+  function handleRecord() {
+    const newPost = {
+      id: id,
+      title: title,
+      summary: summary,
+    };
+    setPreviousPosts([...previousPosts, newPost]);
+    localStorage.setItem(
+      "previousPosts",
+      JSON.stringify([...previousPosts, newPost])
+    );
   }
 
   return (
@@ -52,7 +70,20 @@ export default function EditPost() {
         value={summary}
         onChange={(ev) => setSummary(ev.target.value)}
       />
-      <button style={{ marginTop: "5px" }}>Update</button>
+      <button style={{ marginTop: "5px" }}>Make</button>
+      <div style={{ marginTop: "60px" }}>
+        {previousPosts
+          .filter((post) => post.id === id)
+          .map((post, index) => (
+            <div
+              key={index}
+              className="modeltexts"
+              style={{ marginTop: "6px" }}>
+              <h3>{post.title}</h3>
+              <h3>{post.summary}</h3>
+            </div>
+          ))}
+      </div>
     </form>
   );
 }
